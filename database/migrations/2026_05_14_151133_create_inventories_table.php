@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            // $table->string('product_id');
             $table->date('exp_date');
-            $table->integer('qty');
-            // $table->string('facility_id');
+            $table->integer('bottle_qty')->default(0);
             $table->timestamps();
             $table->softDeletes();
 

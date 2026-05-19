@@ -9,9 +9,6 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    protected $keyType = 'string';
-    public $incrementing = false;
-
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
