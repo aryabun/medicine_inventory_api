@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,4 +8,10 @@ class Inventory extends Model
 {
     /** @use HasFactory<\Database\Factories\InventoryFactory> */
     use HasFactory;
+    protected $fillable = [
+        'product_id',
+        'facility_id',
+        'exp_date',
+        'qty',
+    ];
 }
