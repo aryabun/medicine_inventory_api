@@ -33,6 +33,44 @@ In addition, [Laracasts](https://laracasts.com) contains thousands of video tuto
 
 You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
 
+## Docker (Recommended)
+
+### 1. Build the backend image
+
+```bash
+docker build -t med-inventory-core:latest .
+```
+
+### 2. Configure environment
+
+```bash
+cp .env.example .env
+# Edit .env with your API keys and secrets
+```
+
+### 3. Start all services
+
+```bash
+docker compose up -d
+```
+
+### 4. Tear down
+
+```bash
+docker compose down          # stop containers, keep volumes
+docker compose down -v       # stop containers and delete all data volumes
+```
+
+### Rebuild after code changes
+
+```bash
+docker build -t med-inventory-core:latest . && docker compose up -d app worker 
+#Or Using Option 2:
+docker compose up -d --build
+```
+
+---
+
 ## Agentic Development
 
 Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:

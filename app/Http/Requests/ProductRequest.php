@@ -11,7 +11,7 @@ class ProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class ProductRequest extends FormRequest
             'category_id'    => '',
             'dosage_form_id' => '',
             'dosage'         => '',
-            'image'          => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image'          => 'nullable|image|sometimes|mimes:jpeg,png,jpg|max:2048',
             'status'         => '',
 
         ];

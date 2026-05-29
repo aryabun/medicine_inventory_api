@@ -24,11 +24,12 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $sortBy     = $request->input('sort_by', 'id');       // Defaults to 'id'
+        $sortBy     = $request->input('sort_by', 'id');      // Defaults to 'id'
         $sortMethod = $request->input('sort_method', 'asc'); // Defaults to 'desc'
 
         if ($request->has('id') && $request->filled('id')) {
-            $products = $this->product->where('id', $request->id)->get();
+            $products = $this->product->where('id', $request->id)->first();
+            return new ProductResource($products);
         } else {
             $products = $this->product
             // 2. Only search if 'q' is actually filled out
@@ -45,8 +46,8 @@ class ProductController extends Controller
                     $query->dateTo($request->input('date_to'));
                 })
                 ->paginate();
+            return response()->json(ProductResource::collection($products)->response()->getData(true));
         }
-        return response()->json(ProductResource::collection($products)->response()->getData(true));
 
     }
     public function store(ProductRequest $request)
@@ -79,16 +80,23 @@ class ProductController extends Controller
     public function update(ProductRequest $request, string $id)
     {
         try {
-            $product          = $this->product->findOrFail($id);
-            $product['image'] = $product->image;
-            if ($request->hasFile('image')) {
-                $product['image'] = $this->imageService->editPhoto(
-                    $request->file('image'),
-                    $product->image,
-                    FilePath::PRODUCT->value
-                );
-            }
-            $product->update($request->all());
+            $product = $this->product->findOrFail($id);
+
+            // Gather all incoming validated input data array
+            $data = $request->validated();
+
+            // Determine what the image input is (file binary OR text string)
+            $imageInput = $request->hasFile('image') ? $request->file('image') : $request->input('image');
+
+            // ALWAYS pass the image input to your service to evaluate rules (keep vs remove vs replace)
+            $data['image'] = $this->imageService->editPhoto(
+                $imageInput,
+                $product->image,
+                FilePath::PRODUCT->value
+            );
+
+            // 4. Update using the cleaned data array, NOT the raw request objects
+            $product->update($data);
             return response()->json([
                 'status'  => 'Success',
                 'data'    => new ProductResource($product),
