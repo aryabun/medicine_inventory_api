@@ -9,4 +9,5 @@ class DosageForm extends Model
 {
     /** @use HasFactory<\Database\Factories\DosageFormFactory> */
     use HasFactory;
+    protected $fillable = ['name'];
 }
