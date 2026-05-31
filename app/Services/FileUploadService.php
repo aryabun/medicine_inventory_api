@@ -22,7 +22,7 @@ class FileUploadService
     {
         $targetDirectory = $this->directory($path);
 
-        // 1. REPLACE IT: A brand new file binary was uploaded
+        // A brand new file was uploaded
         if (request()->hasFile('image')) {
             if ($oldPhoto) {
                 $oldFilePath = public_path($targetDirectory . $oldPhoto);
@@ -33,8 +33,7 @@ class FileUploadService
             return $this->getImagePost($photo, $targetDirectory);
         }
 
-        // 2. REMOVE IT: If the file type is selected but no file is chosen, Postman sends nothing.
-        // We treat the complete absence of the 'image' field or an explicit empty value as a deletion command.
+        // If the file type is selected but no file is chosen, Postman sends nothing. We treat the complete absence of the 'image' field or an explicit empty value as a deletion command.
         if (! request()->has('image') || blank($photo) || $photo === 'null') {
             if ($oldPhoto) {
                 $oldFilePath = public_path($targetDirectory . $oldPhoto);
@@ -54,20 +53,20 @@ class FileUploadService
      */
     public function getImagePost($imgs, string $directory): string
     {
-        // 1. Read the image source using the Laravel Facade
+        // Read the image source
         $image = Image::decode($imgs);
 
-        // 2. Safely extract the file extension via core profile drivers
+        // Safely extract the file extension
         $extension = $imgs->getClientOriginalExtension() ?: 'png';
 
-        // 3. Generate a clean, secure unique filename
+        // Generate a clean, secure unique filename
         $filename = Str::random(20) . '.' . $extension;
 
-        // 4. Securely assemble absolute paths
+        // assemble absolute paths
         $cleanedDirectory = trim($directory, '/');
         $destinationPath  = public_path($cleanedDirectory . '/' . $filename);
 
-        // 5. Ensure directory exists and save the processed image safely
+        // Ensure directory exists and save the processed image safely
         $this->makeDirectory(dirname($destinationPath));
         $image->save($destinationPath);
 

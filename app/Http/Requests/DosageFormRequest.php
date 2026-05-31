@@ -12,7 +12,7 @@ class DosageFormRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true; //rollback to false once authentication implement
     }
 
     /**
@@ -23,7 +23,7 @@ class DosageFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique'
+            'name' => 'required'
         ];
     }
 }

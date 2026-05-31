@@ -53,6 +53,14 @@ cp .env.example .env
 ```bash
 docker compose up -d
 ```
+[Optional]
+```bash
+# migrate
+docker compose exec app php artisan migrate
+#seed data
+docker compose exec app php artisan db:seed
+```
+
 
 ### 4. Tear down
 
@@ -65,7 +73,7 @@ docker compose down -v       # stop containers and delete all data volumes
 
 ```bash
 docker build -t med-inventory-core:latest . && docker compose up -d app worker 
-#Or Using Option 2:
+#Or:
 docker compose up -d --build
 ```
 
