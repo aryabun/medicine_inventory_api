@@ -18,19 +18,19 @@ class ProductResource extends JsonResource
     {
         $image_url = 'images/' . FilePath::PRODUCT->value . '/';
         return [
-            'id'             => $this->id,
-            'code'           => $this->code,
-            'name'           => $this->name,
-            'category_id'    => $this->category_id,
-            'dosage_form_id' => $this->dosage_form_id,
-            'dosage'         => $this->dosage,
-            'status'         => $this->status,
-            'description'    => $this->description,
-            'image_url'      => $this->image ? asset($image_url . $this->image) : null,
-            'image_name'     => $this->image,
-            "created_at"     => $this->created_at,
-            "updated_at"     => $this->updated_at,
-            "deleted_at"     =>  $this->deleted_at,
+            'id'          => $this->id,
+            'code'        => $this->code,
+            'name'        => $this->name,
+            'category'    => $this->category,
+            'dosage_form' => $this->dosage_form,
+            'dosage'      => $this->dosage,
+            'status'      => $this->status,
+            'description' => $this->description,
+            'image_url'   => $this->image ? asset($image_url . $this->image) : null,
+            'image_name'  => $this->image,
+            "created_at"  => $this->created_at,
+            "updated_at"  => $this->updated_at,
+            "deleted_at"  => $this->deleted_at,
         ];
 
     }
