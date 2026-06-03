@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['code', 'name', 'category_id', 'dosage_form_id', 'dosage', 'description', 'image', 'status'])]
+#[Fillable(['code','name','category_id','dosage_form_id','dosage','description','image','status'])]
 class Product extends Model
 {
     /** @use HasFactory<\Database\Factories\ProductFactory> */

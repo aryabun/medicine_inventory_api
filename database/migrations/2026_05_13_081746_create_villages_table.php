@@ -11,9 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('communes', function (Blueprint $table) {
+        Schema::create('villages', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('village_code');
+            $table->unsignedBigInteger('province_code');
+            $table->unsignedBigInteger('district_code');
+            $table->unsignedBigInteger('commune_code');
+            $table->string('village_kh')->nullable();
+            $table->string('village_en');
             $table->timestamps();
         });
     }
@@ -23,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('communes');
+        Schema::dropIfExists('villages');
     }
 };
