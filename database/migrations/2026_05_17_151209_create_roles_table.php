@@ -14,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->tinyInteger('staus')->default(1)->comment('1=active 2=inactive');
+            $table->string('name')->unique();
+            $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
