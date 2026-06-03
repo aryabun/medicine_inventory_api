@@ -1,9 +1,9 @@
 <?php
-
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\District;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 
 class DistrictSeeder extends Seeder
 {
@@ -12,6 +12,16 @@ class DistrictSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $path = database_path('data/CambodiaDistrictList2025.json');
+
+        // Read file
+        $json = File::get($path);
+        // Decode File
+        $district = json_decode($json, true);
+
+        // Loop and insert into database
+        foreach ($district as $districts) {
+            District::create($districts);
+        }
     }
 }
