@@ -10,5 +10,5 @@ use Illuminate\Database\Eloquent\Model;
 class DosageForm extends Model
 {
     /** @use HasFactory<\Database\Factories\DosageFormFactory> */
-    use HasFactory;
+    use HasFactory, BasicFilter;
 }

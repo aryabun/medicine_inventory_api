@@ -27,8 +27,8 @@ class ProductController extends Controller
         $sortBy     = $request->input('sort_by', 'id');      // Defaults to 'id'
         $sortMethod = $request->input('sort_method', 'asc'); // Defaults to 'desc'
 
-        if ($request->has('id') && $request->filled('id')) {
-            $products = $this->product->where('id', $request->id)->first();
+        if ($request->filled('id')) {
+            $products = $this->product->findOrFail('id', $request->id)->first();
             return new ProductResource($products);
         } else {
             $products = $this->product
