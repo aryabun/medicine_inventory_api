@@ -6,7 +6,9 @@ use App\Http\Controllers\CommuneController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DosageFormController;
 use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VillageController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +21,5 @@ Route::get('district', [DistrictController::class, 'index']);
 Route::get('commune', [CommuneController::class, 'index']);
 Route::get('village', [VillageController::class, 'index']);
 Route::apiResource('facility', FacilityController::class, ['parameters' => ['facility' => 'facility']]);
+Route::get('role', [RoleController::class, 'index']);
+Route::get('permission', [PermissionController::class, 'index']);

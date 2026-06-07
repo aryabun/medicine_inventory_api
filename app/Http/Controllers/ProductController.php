@@ -20,6 +20,7 @@ class ProductController extends Controller
     {
         $this->product      = $product;
         $this->imageService = $imageService;
+        $this->authorizeResource(Product::class, 'product');
     }
 
     public function index(Request $request)

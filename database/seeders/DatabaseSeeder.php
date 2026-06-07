@@ -23,5 +23,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CommuneSeeder::class);
         $this->call(VillageSeeder::class);
         $this->call(FacilitySeeder::class);
+        $this->call(RoleSeeder::class);
+        $this->call(PermissionSeeder::class);
+        $this->call(RolePermissionSeeder::class);
     }
 }
