@@ -12,6 +12,7 @@ class DosageFormController extends Controller
     public function __construct(DosageForm $dosage_form)
     {
         $this->dosage_form = $dosage_form;
+        $this->authorizeResource($this->dosage_form, 'dosage_form');
     }
 
     public function index(Request $request) {

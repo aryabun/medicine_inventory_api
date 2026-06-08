@@ -12,6 +12,7 @@ class FacilityController extends Controller
     public function __construct(Facility $facility)
     {
         $this->facility = $facility;
+        $this->authorizeResource($this->facility, 'facility');
     }
 
     public function index(Request $request)
