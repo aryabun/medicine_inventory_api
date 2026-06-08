@@ -16,14 +16,14 @@ use Illuminate\Support\Facades\Route;
 #api/v1/product/
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('product', ProductController::class, ['parameters' => ['product' => 'product']]);
+    Route::apiResource('category', CategoryController::class, ['parameters' => ['category' => 'category']]);
+    Route::apiResource('facility', FacilityController::class, ['parameters' => ['facility' => 'facility']]);
 });
-Route::apiResource('category', CategoryController::class, ['parameters' => ['category' => 'category']]);
 Route::apiResource('dosage-form', DosageFormController::class, ['parameters' => ['dosage-form' => 'dosage-form']]);
 Route::get('city', [CityController::class, 'index']);
 Route::get('district', [DistrictController::class, 'index']);
 Route::get('commune', [CommuneController::class, 'index']);
 Route::get('village', [VillageController::class, 'index']);
-Route::apiResource('facility', FacilityController::class, ['parameters' => ['facility' => 'facility']]);
 Route::get('role', [RoleController::class, 'index']);
 Route::get('permission', [PermissionController::class, 'index']);
 Route::get('user', [UserController::class, 'index']);

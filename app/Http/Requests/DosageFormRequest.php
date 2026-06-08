@@ -12,7 +12,7 @@ class DosageFormRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; //rollback to false once authentication implement
+        return false;
     }
 
     /**

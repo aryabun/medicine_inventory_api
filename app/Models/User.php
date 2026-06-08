@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+#[Table(keyType: 'string', incrementing: false)]
 #[Fillable(['first_name', 'last_name', 'username', 'email', 'password', 'gender', 'role_id', 'facility_id'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
@@ -31,10 +33,14 @@ class User extends Authenticatable
             'password'          => 'hashed',
         ];
     }
-    public function role():BelongsTo{
-        return $this->belongsTo(Role::class);
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
     }
-    public function hasPermission($permission): bool{
-        return $this->role->permissions()->where('name', $permission)->exists();
+    public function hasPermission($permission): bool
+    {
+        return $this->role()
+            ->whereHas('permissions', fn($q) => $q->where('name', $permission))
+            ->exists();
     }
 }

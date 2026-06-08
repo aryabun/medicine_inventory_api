@@ -4,10 +4,12 @@ namespace App\Models;
 use App\Traits\BasicFilter;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[Table(keyType: 'string', incrementing: false)]
 #[Fillable(['code','name','category_id','dosage_form_id','dosage','description','image','status'])]
 class Product extends Model
 {
