@@ -14,10 +14,20 @@ class Product extends Model
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory, HasUuids, BasicFilter;
 
-    public static function boot(){
+    public static function boot()
+    {
         parent::boot();
-        self::creating(function (Product $model){
-            $model->code = IdGenerator::generate(['table' => 'products', 'field'=>'code', 'length'=>6, 'prefix'=>'P']);
+        self::creating(function (Product $model) {
+            $model->code = IdGenerator::generate(['table' => 'products', 'field' => 'code', 'length' => 6, 'prefix' => 'P']);
         });
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+    public function dosage_form()
+    {
+        return $this->belongsTo(DosageForm::class, 'dosage_form_id', 'id');
     }
 }

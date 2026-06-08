@@ -18,5 +18,14 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorySeeder::class);
         $this->call(DosageFormSeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(CitySeeder::class);
+        $this->call(DistrictSeeder::class);
+        $this->call(CommuneSeeder::class);
+        $this->call(VillageSeeder::class);
+        $this->call(FacilitySeeder::class);
+        $this->call(RoleSeeder::class);
+        $this->call(PermissionSeeder::class);
+        $this->call(RolePermissionSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }

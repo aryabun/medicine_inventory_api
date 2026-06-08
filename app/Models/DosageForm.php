@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BasicFilter;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,5 +11,5 @@ use Illuminate\Database\Eloquent\Model;
 class DosageForm extends Model
 {
     /** @use HasFactory<\Database\Factories\DosageFormFactory> */
-    use HasFactory;
+    use HasFactory, BasicFilter;
 }
