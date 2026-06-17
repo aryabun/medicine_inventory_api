@@ -51,11 +51,11 @@ class CategoryController extends Controller
             ]);
         }
     }
-    public function update(CategoryRequest $request, $id)
+    public function update(CategoryRequest $request, Category $category)
     {
         try {
-            $category = $this->category->findOrFail($id);
-            $category->update($request->all());
+            $data = $request->validated();
+            $category->update($data);
             return response()->json([
                 'status' => 'Success',
                 'data' => $category,
@@ -69,11 +69,10 @@ class CategoryController extends Controller
             ], 500);
         }
     }
-    public function destroy($id)
+    public function destroy(Category $category)
     {
         try {
             # code...
-            $category = $this->category->findOrFail($id);
             $category->delete();
             return response()->json([
                 'status'  => 'Success',

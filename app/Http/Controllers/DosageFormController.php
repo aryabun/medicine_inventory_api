@@ -50,10 +50,10 @@ class DosageFormController extends Controller
             ]);
         }
     }
-    public function update(DosageFormRequest $request, $id){
+    public function update(DosageFormRequest $request, DosageForm $dosage_form){
          try {
-            $dosage_form = $this->dosage_form->findOrFail($id);
-            $dosage_form->update($request->all());
+            $data = $request->validated();
+            $dosage_form->update($data);
             return response()->json([
                 'status' => 'Success',
                 'data' => $dosage_form,
@@ -68,10 +68,8 @@ class DosageFormController extends Controller
         }
 
     }
-    public function destroy($id){
+    public function destroy(DosageForm $dosage_form){
          try {
-            # code...
-            $dosage_form = $this->dosage_form->findOrFail($id);
             $dosage_form->delete();
             return response()->json([
                 'status'  => 'Success',
