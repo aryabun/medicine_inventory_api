@@ -20,10 +20,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('facility', FacilityController::class, ['parameters' => ['facility' => 'facility']]);
     Route::apiResource('dosage-form', DosageFormController::class, ['parameters' => ['dosage-form' => 'dosage-form']]);
 });
+Route::get('role', [RoleController::class, 'index']);
+Route::get('permission', [PermissionController::class, 'index']);
+Route::get('user', [UserController::class, 'index']);
 Route::get('city', [CityController::class, 'index']);
 Route::get('district', [DistrictController::class, 'index']);
 Route::get('commune', [CommuneController::class, 'index']);
 Route::get('village', [VillageController::class, 'index']);
-Route::get('role', [RoleController::class, 'index']);
-Route::get('permission', [PermissionController::class, 'index']);
-Route::get('user', [UserController::class, 'index']);

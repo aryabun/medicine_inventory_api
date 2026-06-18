@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
             $table->date('exp_date');
-            // $table
-            $table->integer('qty')->default(0);
+            $table->string('batch_no');
+            $table->integer('current_stock')->default(0);
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreignUuid('product_id')->references('id')->on('products')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignUuid('facility_id')->references('id')->on('facilities')->cascadeOnUpdate()->cascadeOnDelete();
-            // Define the composite unique index here
-            $table->unique(['product_id', 'facility_id']);
+            $table->unique(['product_id', 'facility_id', 'batch_no']);
+
         });
     }
 
