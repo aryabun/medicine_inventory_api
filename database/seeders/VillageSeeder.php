@@ -22,9 +22,12 @@ class VillageSeeder extends Seeder
         // Decode File
         $village = json_decode($json, true);
 
-        // Loop and insert into database
-        foreach ($village as $villages) {
-            Village::create($villages);
+        // 2. Chunk the data and insert in bulk via the Query Builder
+        $chunks = array_chunk($village, 100);
+
+        foreach ($chunks as $chunk) {
+            // Note: We use Inventory::insert() instead of Inventory::create()
+            Village::insert($chunk);
         }
     }
 }

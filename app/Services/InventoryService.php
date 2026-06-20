@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\Inventory;
 use App\Models\StockTransaction;
 use Illuminate\Database\DatabaseManager;
+use Illuminate\Support\Facades\Auth;
 
 class InventoryService
 {
@@ -13,15 +14,16 @@ class InventoryService
     /**
      * Process an inbound stock delivery safely inside a transaction.
      */
-    public function processInbound(array $data, int $userId): Inventory
+    public function processInbound(array $data, string $userId): Inventory
     {
         // wrap execution inside the transaction block
         return $this->db->transaction(function () use ($data, $userId) {
+            $facilityId = Auth::user()->facility_id ?? $data['facility_id'];
             // find or create batch
             $batch = Inventory::firstOrCreate(
                 [
                     'product_id'  => $data['product_id'],
-                    'facility_id' => $data['facility_id'],
+                    'facility_id' => $facilityId,
                     'batch_no'    => $data['batch_no'],
                 ],
                 [
@@ -31,13 +33,14 @@ class InventoryService
             );
 
             // update the physical snapshot qty
-            $batch->increment('current_stock', $data['current_stock']);
+            $batch->increment('current_stock', $data['qty']);
 
             // log permanent audit trail line
             StockTransaction::create([
+                'facility_id' =>  $facilityId,
                 'batch_id' => $batch->id,
                 'user_id'  => $userId,
-                'qty'      => $data['current_stock'],
+                'qty'      => $data['qty'],
                 'type'     => 'inbound',
                 'note'     => $data['note'] ?? null,
             ]);
@@ -49,13 +52,14 @@ class InventoryService
     /**
      * Process an outbound stock delivery safely inside a transaction.
      */
-    public function processOutbound(array $data, int $userId): Inventory
+    public function processOutbound(array $data, string $userId): Inventory
     {
         return $this->db->transaction(function () use ($data, $userId) {
+             $facilityId = Auth::user()->facility_id ?? $data['facility_id'];
             //locate the specific inventory batch
             $batch = Inventory::where([
                 'product_id'  => $data['product_id'],
-                'facility_id' => $data['facility_id'],
+                'facility_id' =>  $facilityId,
                 'batch_no'    => $data['batch_no'],
             ])->first();
 
@@ -69,6 +73,7 @@ class InventoryService
 
             //Log permanent audit trail line
             StockTransaction::create([
+                'facility_id' =>  $facilityId,
                 'batch_id' => $batch->id,
                 'user_id'  => $userId,
                 'qty'      => $data['qty'],
