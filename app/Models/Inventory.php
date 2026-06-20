@@ -14,4 +14,10 @@ class Inventory extends Model
     public function transactions(){
         return $this->hasMany(StockTransaction::class, 'batch_id');
     }
+    public function facility(){
+        return $this->belongsTo(Facility::class);
+    }
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
 }

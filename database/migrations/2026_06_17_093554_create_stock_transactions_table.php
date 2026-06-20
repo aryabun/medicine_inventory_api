@@ -20,6 +20,7 @@ return new class extends Migration
 
             $table->foreignId('batch_id')->references('id')->on('inventories')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignUuid('facility_id')->references('id')->on('facilities')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 
