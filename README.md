@@ -56,7 +56,7 @@ docker compose up -d
 [Optional]
 ```bash
 # migrate
-docker compose exec app php artisan migrate
+docker compose exec app php artisan migrate --seed
 #seed data
 docker compose exec app php artisan db:seed
 ```
@@ -79,30 +79,21 @@ docker compose up -d --build
 
 ---
 
-## Agentic Development
+## Local Development
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+If you want to run locally
 
+### 1. Install all the necessary packages
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+```
+### 2. Migrate database tables and seed sample data
+```bash
+php artisan migrate --seed
+```
+### 3. Running project
+```bash
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
