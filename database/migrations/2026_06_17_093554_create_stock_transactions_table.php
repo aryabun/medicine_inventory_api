@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventories', function (Blueprint $table) {
+        Schema::create('stock_transactions', function (Blueprint $table) {
             $table->id();
-            $table->date('exp_date');
-            $table->string('batch_no');
-            $table->integer('current_stock')->default(0);
+            $table->integer('qty');
+            $table->enum('type', ['inbound', 'outbound', 'disposed'])->nullable();
+            $table->text('note')->nullable();
             $table->timestamps();
-            $table->softDeletes();
 
-            $table->foreignUuid('product_id')->references('id')->on('products')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('batch_id')->references('id')->on('inventories')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignUuid('facility_id')->references('id')->on('facilities')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->unique(['product_id', 'facility_id', 'batch_no']);
-
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventories');
+        Schema::dropIfExists('stock_transactions');
     }
 };

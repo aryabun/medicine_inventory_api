@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DosageFormRequest extends FormRequest
+class StockInRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,12 @@ class DosageFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required'
+            'product_id'    => 'required|exists:products,id',
+            'facility_id'   => 'nullable|exists:facilities,id',
+            'batch_no'      => 'required|string|max:50',
+            'exp_date'      => 'required|date|after:today',
+            'qty' => 'required|integer|min:1',
+            'note'          => 'nullable|string|max:255',
         ];
     }
 }

@@ -51,9 +51,9 @@ class AuthController extends Controller
                 'password' => 'required',
             ]);
 
-            $user = $this->user->where('email', $request->email->first());
+            $user = $this->user->where('email', $request->email)->first();
 
-            if (! $this->user || Hash::check($request->password, $user->password)) {
+            if (! $user || !Hash::check($request->password, $user->password)) {
                 # code...
                 throw ValidationException::withMessages([
                     'email' => ['The provided credentials are incorrect.'],
@@ -64,8 +64,8 @@ class AuthController extends Controller
 
             return response()->json([
                 'status'       => 'Success',
-                'data'         => $user,
-                'message'      => "Product successfully created!",
+                'data'         => $user->load('role'),
+                'message'      => "Login successfully!",
                 'access_token' => $token,
                 'token_type'   => 'Bearer',
             ]);
@@ -73,7 +73,7 @@ class AuthController extends Controller
             # code...
             return response()->json([
                 'status'  => 'error',
-                'message' => $e->errorInfo ?: 'Something went wrong!',
+                'message' => $e->getMessage() ?: 'Something went wrong!',
             ], 403);
         }
     }

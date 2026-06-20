@@ -20,6 +20,7 @@ class ProductController extends Controller
     {
         $this->product      = $product;
         $this->imageService = $imageService;
+        $this->authorizeResource(Product::class, 'product');
     }
 
     public function index(Request $request)
@@ -28,8 +29,10 @@ class ProductController extends Controller
         $sortMethod = $request->input('sort_method', 'asc'); // Defaults to 'desc'
 
         if ($request->filled('id')) {
-            $products = $this->product->findOrFail('id', $request->id)->first();
-            return new ProductResource($products);
+            $products = $this->product->where('id', $request->id)->first();
+            return response()->json([
+                'data' => new ProductResource($products),
+            ], 200);
         } else {
             $products = $this->product
             // 2. Only search if 'q' is actually filled out
@@ -77,16 +80,16 @@ class ProductController extends Controller
             ], 500);
         }
     }
-    public function update(ProductRequest $request, string $id)
+    public function update(ProductRequest $request, Product $product)
     {
         try {
-            $product = $this->product->findOrFail($id);
-
             // Gather all incoming validated input data array
             $data = $request->validated();
 
             // Determine what the image input is (file binary OR text string)
-            $imageInput = $request->hasFile('image') ? $request->file('image') : $request->input('image');
+            $imageInput = $request->hasFile('image')
+                ? $request->file('image')
+                : $request->input('image');
 
             // ALWAYS pass the image input to your service to evaluate rules (keep vs remove vs replace)
             $data['image'] = $this->imageService->editPhoto(
@@ -97,6 +100,7 @@ class ProductController extends Controller
 
             // 4. Update using the cleaned data array, NOT the raw request objects
             $product->update($data);
+
             return response()->json([
                 'status'  => 'Success',
                 'data'    => new ProductResource($product),
@@ -106,17 +110,14 @@ class ProductController extends Controller
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'error',
-                'message' => $e->getMessage() ?: 'Something went wrong!',
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
-    // WORKED!!!!
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
         try {
-            $product = $this->product->findOrFail($id);
-
-            // Delete the image file from the server first
+            // Delete image
             if ($product->image) {
                 $directory        = $this->imageService->directory(FilePath::PRODUCT->value);
                 $absoluteFilePath = public_path($directory . $product->image);
@@ -127,15 +128,18 @@ class ProductController extends Controller
             }
 
             $product->delete();
+
             return response()->json([
                 'status'  => 'Success',
                 'message' => "Product successfully deleted!",
             ], 200);
+
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'Error!',
-                'message' => $e->getMessage() ?: 'Something went wrong!',
+                'message' => $e->getMessage(),
             ], 500);
         }
+
     }
 }
