@@ -1,12 +1,35 @@
 <?php
-
 namespace App\Models;
 
+use App\Traits\BasicFilter;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[Table(keyType: 'string', incrementing: false)]
+#[Fillable(['code','name','category_id','dosage_form_id','dosage','description','image','status'])]
 class Product extends Model
 {
     /** @use HasFactory<\Database\Factories\ProductFactory> */
-    use HasFactory;
+    use HasFactory, HasUuids, BasicFilter;
+
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function (Product $model) {
+            $model->code = IdGenerator::generate(['table' => 'products', 'field' => 'code', 'length' => 6, 'prefix' => 'P']);
+        });
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+    public function dosage_form()
+    {
+        return $this->belongsTo(DosageForm::class, 'dosage_form_id', 'id');
+    }
 }

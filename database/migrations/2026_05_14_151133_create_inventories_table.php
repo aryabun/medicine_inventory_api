@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            // $table->string('product_id');
             $table->date('exp_date');
-            $table->integer('qty');
-            // $table->string('facility_id');
+            $table->string('batch_no');
+            $table->integer('current_stock')->default(0);
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreignUuid('product_id')->references('id')->on('products')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignUuid('facility_id')->references('id')->on('facilities')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->unique(['product_id', 'facility_id', 'batch_no']);
+
         });
     }
 

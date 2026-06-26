@@ -9,16 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    protected $keyType   = 'string';
-    public $incrementing = false;
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('code')->unique();
             $table->string('name')->unique();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('dosage_form_id')->nullable();
             $table->string('dosage')->nullable();
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
+            $table->boolean('status')->nullable(); // true if still available from factory
             $table->timestamps();
             $table->softDeletes();
 

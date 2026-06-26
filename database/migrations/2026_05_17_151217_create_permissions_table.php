@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('module_id');
             $table->string('name');
-            $table->string('slug')->nullable();
+            $table->string('module', 50)->nullable();
+            $table->string('feature', 50)->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
